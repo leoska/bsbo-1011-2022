@@ -3,6 +3,8 @@ using System;
 
 internal class Application
 {
+    public static int N_OP = 0;
+
     // Вывод в консоль содержимого массива
     static void PrintArr(int[] arr)
     {
@@ -139,7 +141,7 @@ internal class Application
     {
         ListElem list = new ListElem();
         Random rnd = new Random();
-        int N = 5;
+        int N = 500;
 
         for (int i = 0; i < N; i++)
         {
@@ -148,25 +150,45 @@ internal class Application
 
         list.Print();
 
-        bool flagSwap = false;
-        for (int i = 0; i < N; i++)
-        {
-            flagSwap = false;
+        // START N_OP CALCULATE
 
-            for (int j = 0; j < N - i - 1; j++)
+
+        bool flagSwap = false; // 1
+        Application.N_OP += 3;
+        for (int i = 0; i < N; i++) // 2
+        {
+            flagSwap = false; // 1
+
+            Application.N_OP += 5;
+            for (int j = 0; j < N - i - 1; j++) // 4
             {
-                if (list[j] > list[j + 1])
+                Application.N_OP += 4;
+                if (list[j] > list[j + 1]) // 4
                 {
-                    (list[j], list[j + 1]) = (list[j + 1], list[j]);
-                    flagSwap = true;
+                    Application.N_OP += 13;
+                    (list[j], list[j + 1]) = (list[j + 1], list[j]); // 6 + 4 + 2
+                    flagSwap = true; // 1
                 }
+
+                Application.N_OP += 4;
+                // 4
             }
 
-            if (!flagSwap)
+
+            if (!flagSwap) // 1
+            {
+                Application.N_OP += 1;
                 break;
+            }
+                
+            Application.N_OP += 3;
+            // 2
         }
 
+        // END N_OP CALCULATE
+
         list.Print();
+        Console.WriteLine($"N_OP: {Application.N_OP}");
     }
 
     // Объявляем временный стэк для перестановок элементов
@@ -213,7 +235,7 @@ internal class Application
         //RefvsValType();
         //RefNext();
         //UserExceptions();
-        //SortListElem();
-        StackSort();
+        SortListElem();
+        //StackSort();
     }
 }

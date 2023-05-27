@@ -8,34 +8,45 @@ namespace bsbo_1011_2022
 		// Проверка на пустой ли список
 		public bool isEmpty()
 		{
-			return top == null;
+			Application.N_OP += 1;
+            return top == null;
         }
 
 		// Добавление нового элемента в начало списка
 		public void Push(Element elem)
 		{
-			if (!isEmpty())
+			Application.N_OP += 2;
+            if (!isEmpty()) // 2
 			{
-				elem.next = top;
+				elem.next = top; // 2
+				Application.N_OP += 2;
             }
 
-			top = elem;
-		}
+			top = elem; // 1
+			Application.N_OP += 1;
+
+        }
 
 		// Извлечение элемента из начала списка
 		public Element Pop()
 		{
-			if (isEmpty())
+			Application.N_OP += 1;
+
+            if (isEmpty()) // 1
 			{
 				throw new Exception("ListElem is empty!");
 			}
 
-			Element result = top;
-			top = top.next;
 
-			result.next = null;
+			Element result = top; // 1
+			top = top.next; // 2
 
-			return result;
+			result.next = null; // 2
+
+			Application.N_OP += 5;
+
+
+            return result;
         }
 
 		// Вывод в консоль нашего списка
@@ -53,42 +64,63 @@ namespace bsbo_1011_2022
 		// Получение доступа к i-тому элементу на чтение value
 		public int Get(int index)
 		{
-            Element current = top;
-			for (int i = 1; i < index; i++)
+			Application.N_OP += 1;
+            Element current = top; // 1
+			Application.N_OP += 2;
+            for (int i = 1; i < index; i++) // 2
 			{
-				current = current.next;
+				current = current.next; // 2
 
-				if (current == null)
+				if (current == null) // 1
 				{
 					throw new Exception("Out of range in ListElem!");
 				}
+
+				Application.N_OP += 5;
+				// 2
             }
 
-			return current.value;
+
+			return current.value; // 1
         }
 
         // Получение доступа к i-тому элементу на запись value
         public void Set(int index, int newValue)
 		{
-            Element current = top;
+            Element current = top; // 1
+			Application.N_OP += 3;
+			// 2
             for (int i = 1; i < index; i++)
             {
-                current = current.next;
+                current = current.next; // 2
 
-                if (current == null)
+                if (current == null) // 1
                 {
                     throw new Exception("Out of range in ListElem!");
                 }
+
+				Application.N_OP += 5;
+				// 2
             }
 
-			current.value = newValue;
+			current.value = newValue; // 2
+									  // 2
+			Application.N_OP += 4;
         }
 
 		// Перегрузка оператора индексации [] (как у массива)
 		public virtual int this[int index]
 		{
-			get => Get(index);
-			set => Set(index, value);
+			get
+			{
+				Application.N_OP += 2;
+                return Get(index);
+			}
+			set
+			{
+				Application.N_OP += 3;
+                Set(index, value);
+			}
 		}
 	}
 }
